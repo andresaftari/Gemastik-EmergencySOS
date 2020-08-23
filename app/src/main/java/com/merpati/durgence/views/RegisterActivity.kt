@@ -63,9 +63,10 @@ class RegisterActivity : AppCompatActivity() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
 
-                            if (number.substring(1) != "+62")
-                                newNumber = "+62${number.substring(1, number.length)}"
-                            
+                            newNumber = if (number.substring(1) != "+62")
+                                "+62${number.substring(1, number.length)}"
+                            else number
+
                             database.apply {
                                 child(DB_USERS).child(userID).child("Name").setValue(name)
                                 child(DB_USERS).child(userID).child("Number").setValue(newNumber)

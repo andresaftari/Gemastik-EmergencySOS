@@ -6,5 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.merpati.durgence.views.MainActivity">
 
-
+    <ImageView
+        android:src="@drawable/sample"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription" />
 </RelativeLayout>
