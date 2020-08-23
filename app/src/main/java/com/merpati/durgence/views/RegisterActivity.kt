@@ -112,6 +112,7 @@ class RegisterActivity : AppCompatActivity() {
                             ).show()
 
                             pb_loading?.visibility = View.GONE
+                            database.child(DB_USERS).child(userID).child("status").setValue("1")
 
                             startActivity(
                                 Intent(
@@ -172,6 +173,7 @@ class RegisterActivity : AppCompatActivity() {
                                 child(DB_USERS).child(userID).child("Name").setValue(name)
                                 child(DB_USERS).child(userID).child("Number").setValue(newNumber)
                                 child(DB_USERS).child(userID).child("Email").setValue(email)
+                                child(DB_USERS).child(userID).child("status").setValue("1")
                             }
                             pb_loading?.visibility = View.GONE
 
