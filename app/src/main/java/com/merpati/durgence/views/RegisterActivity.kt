@@ -1,4 +1,4 @@
-package com.andresaftari.durgence.views
+package com.merpati.durgence.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.andresaftari.durgence.DB_USERS
+import com.merpati.durgence.DB_USERS
 import com.andresaftari.durgence.R
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         auth = FirebaseAuth.getInstance()
-        userID = auth.currentUser?.uid.toString()
         database = FirebaseDatabase.getInstance().reference
 
         btn_register.setOnClickListener { registerUser() }
@@ -43,14 +42,15 @@ class RegisterActivity : AppCompatActivity() {
         val name = editUserName.editText?.text.toString()
         val number = editUserNumber.editText?.text.toString()
 
+        val newName = "$name@durgence.merpati.com"
+
         try {
             if (name.isEmpty() || number.isEmpty()) validateForms()
             else {
-                Log.i(TAG, "+62${number.substring(1, number.length)}")
-                Log.i(TAG, "Hello, $name")
+                userID = auth.currentUser!!.uid
 
-                auth.createUserWithEmailAndPassword(name, number)
-                    .addOnCompleteListener { task: Task<AuthResult> ->
+                auth.createUserWithEmailAndPassword(newName, number).apply {
+                    addOnCompleteListener { task: Task<AuthResult> ->
                         if (task.isSuccessful) {
                             Snackbar.make(
                                 btn_register,
@@ -58,16 +58,27 @@ class RegisterActivity : AppCompatActivity() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
 
+                            val newNumber = "+62${number.substring(1, number.length)}"
+
                             database.apply {
                                 child(DB_USERS).child(userID).child("Name").setValue(name)
-                                child(DB_USERS).child(userID).child("Number").setValue(number)
+                                child(DB_USERS).child(userID).child("Number").setValue(newNumber)
                             }
 
                             pb_loading?.visibility = View.GONE
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(
+                                Intent(
+                                    this@RegisterActivity,
+                                    MainActivity::class.java
+                                )
+                            )
+
+                            Log.i(TAG, "+62${number.substring(1, number.length)}")
+                            Log.i(TAG, "Hello, $name")
                         }
+
                     }
-                    .addOnFailureListener { e: Exception ->
+                    addOnFailureListener { e: Exception ->
                         Snackbar.make(
                             btn_register,
                             "Failed! ${e.message} === ${e.printStackTrace()}",
@@ -76,6 +87,7 @@ class RegisterActivity : AppCompatActivity() {
 
                         pb_loading?.visibility = View.GONE
                     }
+                }
             }
 
         } catch (e: FirebaseAuthException) {

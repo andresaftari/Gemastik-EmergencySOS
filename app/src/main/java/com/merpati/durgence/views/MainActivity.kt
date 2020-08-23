@@ -1,4 +1,4 @@
-package com.andresaftari.durgence.views
+package com.merpati.durgence.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
