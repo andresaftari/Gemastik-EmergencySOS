@@ -21,6 +21,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
     private lateinit var userID: String
+    private lateinit var newName: String
 
     companion object {
         const val TAG = "RegisterActivity"
@@ -42,7 +43,10 @@ class RegisterActivity : AppCompatActivity() {
         val name = editUserName.editText?.text.toString()
         val number = editUserNumber.editText?.text.toString()
 
-        val newName = "$name@durgence.merpati.com"
+        newName = if (name.contains(" ")) name.replace(
+            " ",
+            "@durgence.merpati.com"
+        ) else "$name@durgence.merpati.com"
 
         try {
             if (name.isEmpty() || number.isEmpty()) validateForms()
