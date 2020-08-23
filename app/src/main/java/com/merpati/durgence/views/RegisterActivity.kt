@@ -22,6 +22,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var userID: String
     private lateinit var newName: String
+    private lateinit var newNumber: String
 
     companion object {
         const val TAG = "RegisterActivity"
@@ -62,8 +63,9 @@ class RegisterActivity : AppCompatActivity() {
                                 Snackbar.LENGTH_SHORT
                             ).show()
 
-                            val newNumber = "+62${number.substring(1, number.length)}"
-
+                            if (number.substring(1) != "+62")
+                                newNumber = "+62${number.substring(1, number.length)}"
+                            
                             database.apply {
                                 child(DB_USERS).child(userID).child("Name").setValue(name)
                                 child(DB_USERS).child(userID).child("Number").setValue(newNumber)
