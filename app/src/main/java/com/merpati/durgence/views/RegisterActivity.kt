@@ -37,17 +37,18 @@ class RegisterActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
+        userID = auth.currentUser!!.uid
 
         btn_register.setOnClickListener {
             val name = editUserName.editText?.text.toString()
 
             if (name.contains(" ")) {
-                newName = name.replace(" ", "").toLowerCase(Locale.ROOT)
-                email = "$newName@durgence.merpati.com"
-            } else email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+                newName = name.replace(" ", "")
+                email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+            } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
 
             auth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
-                val isNewUser = task.result!!.signInMethods!!.isEmpty()
+                val isNewUser = task.result?.signInMethods!!.isEmpty()
 
                 if (isNewUser) {
                     registerUser()
@@ -91,28 +92,26 @@ class RegisterActivity : AppCompatActivity() {
         val number = editUserNumber.editText?.text.toString()
 
         if (name.contains(" ")) {
-            newName = name.replace(" ", "").toLowerCase(Locale.ROOT)
-            email = "$newName@durgence.merpati.com"
-        } else email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+            newName = name.replace(" ", "")
+            email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+        } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
 
         Log.i(TAG, "Email: ${email.toLowerCase(Locale.ROOT)}")
+
+        Snackbar.make(
+            btn_register,
+            "Welcome, $name!",
+            Snackbar.LENGTH_SHORT
+        ).show()
 
         try {
             if (name.isEmpty() || number.isEmpty()) validateForms()
             else {
-                userID = auth.currentUser!!.uid
-
                 auth.signInWithEmailAndPassword(email, number).apply {
                     addOnCompleteListener { task: Task<AuthResult> ->
                         if (task.isSuccessful) {
-                            Snackbar.make(
-                                btn_register,
-                                "Welcome, $name!",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-
                             pb_loading?.visibility = View.GONE
-                            database.child(DB_USERS).child(userID).child("status").setValue("1")
+                            database.child(DB_USERS).child(userID).child("Status").setValue("1")
 
                             startActivity(
                                 Intent(
@@ -151,16 +150,15 @@ class RegisterActivity : AppCompatActivity() {
         val number = editUserNumber.editText?.text.toString()
 
         if (name.contains(" ")) {
-            newName = name.replace(" ", "").toLowerCase(Locale.ROOT)
-            email = "$newName@durgence.merpati.com"
-        } else email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+            newName = name.replace(" ", "")
+            email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
+        } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
 
         Log.i(TAG, "Email: ${email.toLowerCase(Locale.ROOT)}")
 
         try {
             if (name.isEmpty() || number.isEmpty()) validateForms()
             else {
-                userID = auth.currentUser!!.uid
 
                 auth.createUserWithEmailAndPassword(email, number).apply {
                     addOnCompleteListener { task: Task<AuthResult> ->
@@ -173,7 +171,9 @@ class RegisterActivity : AppCompatActivity() {
                                 child(DB_USERS).child(userID).child("Name").setValue(name)
                                 child(DB_USERS).child(userID).child("Number").setValue(newNumber)
                                 child(DB_USERS).child(userID).child("Email").setValue(email)
-                                child(DB_USERS).child(userID).child("status").setValue("1")
+                                child(DB_USERS).child(userID).child("Status").setValue("1")
+                                child(DB_USERS).child(userID).child("Latitude").setValue("")
+                                child(DB_USERS).child(userID).child("Longitude").setValue("")
                             }
                             pb_loading?.visibility = View.GONE
 
