@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.merpati.durgence.DB_USERS
+import com.merpati.durgence.model.Users
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
@@ -22,7 +23,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
-    private lateinit var userID: String
     private lateinit var newName: String
     private lateinit var email: String
     private lateinit var newNumber: String
@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
-        userID = auth.currentUser!!.uid
 
         btn_register.setOnClickListener {
             val name = editUserName.editText?.text.toString()
@@ -64,21 +63,19 @@ class RegisterActivity : AppCompatActivity() {
     private fun validateForms() {
         when {
             TextUtils.isEmpty(editUserName.editText?.text) -> {
-                Snackbar.make(
-                    btn_register,
-                    "Silakan input nama Anda",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                editUserName.editText?.apply {
+                    error = "Silakan input nama Anda"
+                    requestFocus()
+                }
 
                 pb_loading?.visibility = View.GONE
             }
 
             TextUtils.isEmpty(editUserNumber.editText?.text) -> {
-                Snackbar.make(
-                    btn_register,
-                    "Silakan input nomor HP Anda",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                editUserNumber.editText?.apply {
+                    error = "Silakan input nomor HP Anda"
+                    requestFocus()
+                }
 
                 pb_loading?.visibility = View.GONE
             }
@@ -111,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
                     addOnCompleteListener { task: Task<AuthResult> ->
                         if (task.isSuccessful) {
                             pb_loading?.visibility = View.GONE
-                            database.child(DB_USERS).child(userID).child("Status").setValue("1")
+                            database.child(DB_USERS).child(auth.uid!!).child("status").setValue("1")
 
                             startActivity(
                                 Intent(
@@ -137,7 +134,6 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
             }
-
         } catch (e: FirebaseAuthException) {
             Log.i(TAG, "Failed! ${e.message} --- ${e.printStackTrace()}")
         }
@@ -159,7 +155,6 @@ class RegisterActivity : AppCompatActivity() {
         try {
             if (name.isEmpty() || number.isEmpty()) validateForms()
             else {
-
                 auth.createUserWithEmailAndPassword(email, number).apply {
                     addOnCompleteListener { task: Task<AuthResult> ->
                         if (task.isSuccessful) {
@@ -167,14 +162,16 @@ class RegisterActivity : AppCompatActivity() {
                                 "+62${number.substring(1, number.length)}"
                             else number
 
-                            database.apply {
-                                child(DB_USERS).child(userID).child("Name").setValue(name)
-                                child(DB_USERS).child(userID).child("Number").setValue(newNumber)
-                                child(DB_USERS).child(userID).child("Email").setValue(email)
-                                child(DB_USERS).child(userID).child("Status").setValue("1")
-                                child(DB_USERS).child(userID).child("Latitude").setValue("")
-                                child(DB_USERS).child(userID).child("Longitude").setValue("")
-                            }
+                            database.child(DB_USERS).child(auth.uid!!).setValue(
+                                Users(
+                                    auth.uid!!,
+                                    email,
+                                    newNumber,
+                                    "",
+                                    "",
+                                    "1"
+                                )
+                            )
                             pb_loading?.visibility = View.GONE
 
                             startActivity(
