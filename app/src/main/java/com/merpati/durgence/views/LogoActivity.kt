@@ -3,7 +3,6 @@ package com.merpati.durgence.views
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.andresaftari.durgence.R
 import com.google.firebase.auth.FirebaseAuth
@@ -11,7 +10,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.merpati.durgence.DB_USERS
 import com.merpati.durgence.model.Users
-import kotlinx.android.synthetic.main.activity_logo.*
 
 class LogoActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -37,9 +35,17 @@ class LogoActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) checkAlreadyUser(user)
         else {
-            startActivity(Intent(this, RegisterActivity::class.java))
-            finish()
-            pb_loading.visibility = View.GONE
+            val background = object : Thread() {
+                override fun run() {
+                    try {
+                        sleep(2500)
+                        startActivity(Intent(baseContext, RegisterActivity::class.java))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            background.start()
         }
     }
 
@@ -60,14 +66,24 @@ class LogoActivity : AppCompatActivity() {
                                         RegisterActivity::class.java
                                     )
                                 )
-                            else
-                                startActivity(
-                                    Intent(
-                                        this@LogoActivity,
-                                        MainActivity::class.java
-                                    )
-                                )
-                            finish()
+                            else {
+                                val background = object : Thread() {
+                                    override fun run() {
+                                        try {
+                                            sleep(2500)
+                                            startActivity(
+                                                Intent(
+                                                    baseContext,
+                                                    MainActivity::class.java
+                                                )
+                                            )
+                                        } catch (e: Exception) {
+                                            e.printStackTrace()
+                                        }
+                                    }
+                                }
+                                background.start()
+                            }
                         }
                     } else {
                         this@LogoActivity.database.child(DB_USERS).child(user.uid).setValue(

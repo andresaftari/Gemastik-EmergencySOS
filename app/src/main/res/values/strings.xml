@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">D\'Urgence</string>
+
+    <!--Component-->
     <string name="inputName">Masukkan nama kamu</string>
     <string name="inputNumber">Masukkan nomor kamu</string>
+
+    <!--Button-->
     <string name="next">LANJUTKAN</string>
+    <string name="verification">VERIFIKASI</string>
 </resources>

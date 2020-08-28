@@ -1,5 +1,6 @@
 package com.merpati.durgence.views
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -29,6 +30,11 @@ class RegisterActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "RegisterActivity"
+
+        interface OnRequestOTP {
+            fun onItemClick(dialogInterface: DialogInterface, position: Int)
+            fun onLoad(view: View)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +80,15 @@ class RegisterActivity : AppCompatActivity() {
             TextUtils.isEmpty(editUserNumber.editText?.text) -> {
                 editUserNumber.editText?.apply {
                     error = "Silakan input nomor HP Anda"
+                    requestFocus()
+                }
+
+                pb_loading?.visibility = View.GONE
+            }
+
+            editUserNumber.editText?.text!!.length < 10 -> {
+                editUserNumber.editText?.apply {
+                    error = "Silakan input nomor HP Anda dengan benar"
                     requestFocus()
                 }
 
