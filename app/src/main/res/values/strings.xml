@@ -8,4 +8,6 @@
     <!--Button-->
     <string name="next">LANJUTKAN</string>
     <string name="verification">VERIFIKASI</string>
+    <string name="verification_hint">Silakan masukkan 6 digit kode OTP yang dikirim ke nomor ponselmu</string>
+    <string name="otpInputHint">Kode OTP...</string>
 </resources>

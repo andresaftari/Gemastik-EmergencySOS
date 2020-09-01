@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "223588462280-9bk08rsdjcthurl51efpm6n3m0jigo6k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andresaftari.durgence",
+            "certificate_hash": "1f89a31d3b71f46dbbad3579ece83c5c5549f5e4"
+          }
+        },
+        {
           "client_id": "223588462280-laaru9jm9nfdbk1mot5fdduoo7j1i6q5.apps.googleusercontent.com",
           "client_type": 3
         }

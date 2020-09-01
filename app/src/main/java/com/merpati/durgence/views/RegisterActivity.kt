@@ -1,6 +1,5 @@
 package com.merpati.durgence.views
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,63 +7,108 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.andresaftari.durgence.R
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.TaskExecutors
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.AuthResult
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.merpati.durgence.DB_USERS
 import com.merpati.durgence.model.Users
+import com.merpati.durgence.views.dialog.BottomSheetFragment
 import kotlinx.android.synthetic.main.activity_register.*
-import java.util.*
+import kotlinx.android.synthetic.main.fragment_bottom_sheet.*
+import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
-    private lateinit var newName: String
-    private lateinit var email: String
-    private lateinit var newNumber: String
+    private lateinit var verificationId: String
+    private lateinit var phoneNumber: String
 
     companion object {
         const val TAG = "RegisterActivity"
-
-        interface OnRequestOTP {
-            fun onItemClick(dialogInterface: DialogInterface, position: Int)
-            fun onLoad(view: View)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        btn_register.setOnClickListener {
-            val name = editUserName.editText?.text.toString()
+        btn_register.setOnClickListener { validateForms() }
+    }
 
-            if (name.contains(" ")) {
-                newName = name.replace(" ", "")
-                email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
-            } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
+    override fun onStart() {
+        super.onStart()
 
-            auth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
-                val isNewUser = task.result?.signInMethods!!.isEmpty()
-
-                if (isNewUser) {
-                    registerUser()
-                    Log.i(TAG, "Is new user!")
-                } else {
-                    loginUser()
-                    Log.i(TAG, "Is old user!")
-                }
+        if (auth.currentUser != null) {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
+            startActivity(intent)
         }
     }
+
+    private fun verifyCode(code: String) {
+        try {
+            val credential = PhoneAuthProvider.getCredential(verificationId, code)
+            signInWithCredential(credential)
+        } catch (e: FirebaseAuthException) {
+            Log.i(TAG, e.message.toString())
+        } catch (e: Exception) {
+            Log.i(TAG, e.message.toString())
+        }
+    }
+
+    private fun signInWithCredential(credential: PhoneAuthCredential) =
+        auth.signInWithCredential(credential).apply {
+            addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val name = editUserName.editText?.text.toString()
+                    val number = editUserNumber.editText?.text.toString()
+
+                    val intent =
+                        Intent(
+                            this@RegisterActivity,
+                            MainActivity::class.java
+                        ).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            putExtra("Name", name)
+                            putExtra("Number", number)
+                        }
+
+                    database.child(DB_USERS).child(auth.uid!!).setValue(
+                        Users(
+                            auth.uid!!,
+                            name,
+                            number,
+                            "",
+                            "",
+                            "1"
+                        )
+                    )
+                    startActivity(intent)
+                }
+            }
+            addOnFailureListener { e: Exception ->
+                Snackbar.make(
+                    btn_verification,
+                    "Failed! ${e.message}",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                Log.i(TAG, "${e.message} = ${e.printStackTrace()}")
+            }
+        }
 
     private fun validateForms() {
         when {
@@ -73,7 +117,6 @@ class RegisterActivity : AppCompatActivity() {
                     error = "Silakan input nama Anda"
                     requestFocus()
                 }
-
                 pb_loading?.visibility = View.GONE
             }
 
@@ -82,7 +125,6 @@ class RegisterActivity : AppCompatActivity() {
                     error = "Silakan input nomor HP Anda"
                     requestFocus()
                 }
-
                 pb_loading?.visibility = View.GONE
             }
 
@@ -91,66 +133,10 @@ class RegisterActivity : AppCompatActivity() {
                     error = "Silakan input nomor HP Anda dengan benar"
                     requestFocus()
                 }
-
                 pb_loading?.visibility = View.GONE
             }
-        }
-    }
 
-    private fun loginUser() {
-        pb_loading?.visibility = View.VISIBLE
-
-        val name = editUserName.editText?.text.toString()
-        val number = editUserNumber.editText?.text.toString()
-
-        if (name.contains(" ")) {
-            newName = name.replace(" ", "")
-            email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
-        } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
-
-        Log.i(TAG, "Email: ${email.toLowerCase(Locale.ROOT)}")
-
-        Snackbar.make(
-            btn_register,
-            "Welcome, $name!",
-            Snackbar.LENGTH_SHORT
-        ).show()
-
-        try {
-            if (name.isEmpty() || number.isEmpty()) validateForms()
-            else {
-                auth.signInWithEmailAndPassword(email, number).apply {
-                    addOnCompleteListener { task: Task<AuthResult> ->
-                        if (task.isSuccessful) {
-                            pb_loading?.visibility = View.GONE
-                            database.child(DB_USERS).child(auth.uid!!).child("status").setValue("1")
-
-                            startActivity(
-                                Intent(
-                                    this@RegisterActivity,
-                                    MainActivity::class.java
-                                )
-                            )
-                        } else
-                            Snackbar.make(
-                                btn_register,
-                                "Check your connection!",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                    }
-                    addOnFailureListener { e: Exception ->
-                        Snackbar.make(
-                            btn_register,
-                            "${e.message}",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-
-                        pb_loading?.visibility = View.GONE
-                    }
-                }
-            }
-        } catch (e: FirebaseAuthException) {
-            Log.i(TAG, "Failed! ${e.message} --- ${e.printStackTrace()}")
+            else -> registerUser()
         }
     }
 
@@ -160,60 +146,53 @@ class RegisterActivity : AppCompatActivity() {
         val name = editUserName.editText?.text.toString()
         val number = editUserNumber.editText?.text.toString()
 
-        if (name.contains(" ")) {
-            newName = name.replace(" ", "")
-            email = "$newName@durgence.merpati.com".toLowerCase(Locale.ROOT)
-        } else email = "$name@durgence.merpati.com".toLowerCase(Locale.ROOT)
+        phoneNumber = if (number.substring(1) != "+62")
+            "+62${number.substring(1, number.length)}" else number
 
-        Log.i(TAG, "Email: ${email.toLowerCase(Locale.ROOT)}")
+        Log.i(TAG, "Email: $name = Number: $phoneNumber")
 
-        try {
-            if (name.isEmpty() || number.isEmpty()) validateForms()
-            else {
-                auth.createUserWithEmailAndPassword(email, number).apply {
-                    addOnCompleteListener { task: Task<AuthResult> ->
-                        if (task.isSuccessful) {
-                            newNumber = if (number.substring(1) != "+62")
-                                "+62${number.substring(1, number.length)}"
-                            else number
+        // Verification
+        if (name.isNotEmpty() && number.isNotEmpty()) {
+            val bottomSheetFragment = BottomSheetFragment()
+            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
 
-                            database.child(DB_USERS).child(auth.uid!!).setValue(
-                                Users(
-                                    auth.uid!!,
-                                    email,
-                                    newNumber,
-                                    "",
-                                    "",
-                                    "1"
-                                )
-                            )
-                            pb_loading?.visibility = View.GONE
+            val code = editUserOTP.editText?.text.toString()
+            verificationId = code
 
-                            startActivity(
-                                Intent(
-                                    this@RegisterActivity,
-                                    MainActivity::class.java
-                                )
-                            )
+            val callback: PhoneAuthProvider.OnVerificationStateChangedCallbacks =
+                object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onCodeSent(
+                        codes: String,
+                        forceResendingToken: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        super.onCodeSent(code, forceResendingToken)
+                        verificationId = codes
+                    }
 
-                            Log.i(TAG, "+62${number.substring(1, number.length)}")
-                            Log.i(TAG, "Hello, $name")
+                    override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
+                        val codes: String? = phoneAuthCredential.smsCode
+                        if (codes != null) {
+                            editUserOTP.editText?.setText(codes)
+                            verifyCode(codes)
                         }
                     }
-                    addOnFailureListener { e: Exception ->
-                        Snackbar.make(
-                            btn_register,
-                            "${e.message}",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
 
-                        pb_loading?.visibility = View.GONE
+                    override fun onVerificationFailed(e: FirebaseException) {
+                        Snackbar.make(editUserOTP, "Failed! ${e.message}", Snackbar.LENGTH_SHORT)
+                            .show()
+                        Log.i(TAG, "${e.message} = ${e.printStackTrace()}")
                     }
                 }
-            }
 
-        } catch (e: FirebaseAuthException) {
-            Log.i(TAG, "Failed! ${e.message} --- ${e.printStackTrace()}")
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                60,
+                TimeUnit.SECONDS,
+                TaskExecutors.MAIN_THREAD,
+                callback
+            )
+
+            verifyCode(code)
         }
     }
 }
