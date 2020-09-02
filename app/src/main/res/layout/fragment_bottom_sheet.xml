@@ -8,7 +8,7 @@
     android:layout_margin="8dp"
     app:behavior_hideable="false"
     app:behavior_peekHeight="240dp"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="@color/colorBase2"
     app:cardCornerRadius="24dp"
     app:layout_behavior="@string/bottom_sheet_behavior"
     tools:context="com.merpati.durgence.views.dialog.BottomSheetFragment">
@@ -66,9 +66,11 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_below="@id/editUserOTP"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
+            android:textColor="@color/colorHint"
             android:layout_marginEnd="24dp"
             android:text="@string/verification" />
 

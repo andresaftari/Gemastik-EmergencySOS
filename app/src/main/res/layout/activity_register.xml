@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.merpati.durgence.views.RegisterActivity">
+    android:background="@color/colorBase2"
+    tools:context="com.merpati.durgence.views.ui.activity.RegisterActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,7 +26,8 @@
             android:layout_height="250dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="64dp"
-            android:src="@drawable/register_logo"
+            android:scaleType="center"
+            android:src="@drawable/login_logo"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -65,6 +67,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:textColor="@color/colorHint"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"

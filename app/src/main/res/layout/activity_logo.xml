@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.merpati.durgence.views.LogoActivity">
+    android:background="@color/colorBase1"
+    tools:context="com.merpati.durgence.views.ui.activity.LogoActivity">
 
     <ImageView
         android:id="@+id/splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
         android:src="@drawable/main_logo"
+        android:scaleType="center"
         tools:ignore="ContentDescription" />
 
     <ProgressBar

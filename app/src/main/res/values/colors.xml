@@ -4,5 +4,14 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#00EAD3</color>
 
-    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBase1">#E5F6FF</color>
+    <color name="colorBase2">#FFFFFF</color>
+    <color name="colorButton">#96DFFF</color>
+    <color name="colorFirstAid">#63C97B</color>
+    <color name="colorFire">#F24545</color>
+    <color name="colorPolice">#898989</color>
+    <color name="colorHospital">#E5F6FF</color>
+    <color name="colorHint">#06B3FF</color>
+    <color name="colorChosenIcon">#FD8A93</color>
+    <color name="colorUnchosenIcon">#06B3FF</color>
 </resources>

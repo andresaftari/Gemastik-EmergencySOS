@@ -1,4 +1,4 @@
-package com.merpati.durgence.views
+package com.merpati.durgence.views.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
