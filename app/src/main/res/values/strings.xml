@@ -12,8 +12,10 @@
     <string name="otpInputHint">Kode OTP…</string>
 
     <!--Fragment-->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_profile">PROFILE</string>
     <string name="menu_aid">FIRST AID</string>
     <string name="menu_home">HOME</string>
+
+    <!--Text-->
+    <string name="info">D\'urgence Emergency Call adalah aplikasi yang dapat membantu masyarakat yang sedang berada dalam kondisi darurat. Dengan mengirimkan kode SOS pada masing-masing smartphone maka bantuan kami akan segera datang.</string>
 </resources>

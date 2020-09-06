@@ -10,10 +10,12 @@
         android:layout_height="match_parent"
         android:text="@string/menu_profile" />
 
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="LOGOUT" />
+    <Button
+        android:id="@+id/btn_logout"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorHint"
+        android:layout_centerInParent="true"
+        android:text="LOGOUT" />
 </RelativeLayout>
