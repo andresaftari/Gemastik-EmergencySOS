@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/splashScreen"
     android:background="@color/colorBase1"
-    tools:context="com.merpati.durgence.views.ui.activity.LogoActivity">
+    tools:context="com.merpati.durgence.views.ui.activity.authentication.LogoActivity">
 
     <ImageView
         android:id="@+id/splash"

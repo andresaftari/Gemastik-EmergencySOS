@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.merpati.durgence.DB_USERS
-import com.merpati.durgence.views.ui.activity.RegisterActivity
+import com.merpati.durgence.views.ui.activity.authentication.LogoActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
@@ -32,7 +32,12 @@ class ProfileFragment : Fragment() {
         btn_logout.setOnClickListener {
             database.child(DB_USERS).child(auth.uid!!).child("status").setValue("0")
             auth.signOut()
-            startActivity(Intent(activity, RegisterActivity::class.java))
+            startActivity(
+                Intent(activity, LogoActivity::class.java).putExtra(
+                    "LOGOUT",
+                    "Anda telah logout"
+                )
+            )
         }
     }
 }

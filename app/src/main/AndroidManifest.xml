@@ -15,16 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.merpati.durgence.views.ui.activity.InfoActivity" />
-        <activity android:name="com.merpati.durgence.views.ui.activity.LogoActivity">
+        <activity android:name="com.merpati.durgence.views.ui.activity.main.HospitalActivity"></activity>
+        <activity android:name="com.merpati.durgence.views.ui.activity.main.FirstAidActivity" />
+        <activity android:name="com.merpati.durgence.views.ui.activity.main.InfoActivity" />
+        <activity android:name="com.merpati.durgence.views.ui.activity.authentication.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.merpati.durgence.views.ui.activity.RegisterActivity" />
-        <activity android:name="com.merpati.durgence.views.ui.activity.MainActivity" />
+        <activity android:name="com.merpati.durgence.views.ui.activity.authentication.RegisterActivity" />
+        <activity android:name="com.merpati.durgence.views.ui.MainActivity" />
     </application>
 
 </manifest>

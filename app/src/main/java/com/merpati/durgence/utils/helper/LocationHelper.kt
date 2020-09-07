@@ -123,6 +123,8 @@ data class LocationHelper(private val context: Context) : PermissionResultCallba
                 longitude,
                 1 // Here 1 is max location result to returned, recommended 1 to 5
             )
+            Log.i("LocationHelper", "$latitude, $longitude")
+
             return location[0]
         } catch (e: IOException) {
             Log.i("LocationHelper", e.printStackTrace().toString())
@@ -196,8 +198,7 @@ data class LocationHelper(private val context: Context) : PermissionResultCallba
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_CHECK_SETTINGS -> when (resultCode) {
-                Activity.RESULT_OK ->
-                    lastKnownLocation = location
+                Activity.RESULT_OK -> lastKnownLocation = location
                 Activity.RESULT_CANCELED -> {
                     // Nothing to do
                 }

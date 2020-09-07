@@ -1,4 +1,4 @@
-package com.merpati.durgence.views.ui.activity
+package com.merpati.durgence.views.ui.activity.authentication
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.merpati.durgence.DB_USERS
 import com.merpati.durgence.model.Users
 import com.merpati.durgence.views.dialog.BottomSheetFragment
+import com.merpati.durgence.views.ui.MainActivity
+import com.merpati.durgence.views.ui.activity.main.InfoActivity
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_bottom_sheet.*
 import java.util.concurrent.TimeUnit

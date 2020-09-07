@@ -1,4 +1,4 @@
-package com.merpati.durgence.views.ui.activity
+package com.merpati.durgence.views.ui.activity.main
 
 import android.content.Intent
 import android.location.Location
@@ -14,15 +14,14 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.merpati.durgence.currentLat
 import com.merpati.durgence.currentLng
 import com.merpati.durgence.utils.helper.LocationHelper
+import com.merpati.durgence.views.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_info.*
 
-@Suppress("DEPRECATION")
 class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback {
     private var lastKnownLocation: Location? = null
     private var locationHelper: LocationHelper? = null
     private var locationManager: LocationManager? = null
-    private var isLoaded = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +36,11 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
             // Building the GoogleApi client
             locationHelper!!.buildGoogleApiClient()
-
             lastKnownLocation = locationHelper?.location
 
             if (lastKnownLocation != null) {
                 currentLat = lastKnownLocation!!.latitude
                 currentLng = lastKnownLocation!!.longitude
-                getLocation()
             }
 
             // Request location updates
@@ -61,6 +58,10 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 Log.i("InfoActivity", "${e.message} - ${e.printStackTrace()}")
             }
         }
+
+        btn_info.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     // Initiate the location listener
@@ -68,8 +69,6 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         override fun onLocationChanged(location: Location) {
             currentLat = location.latitude
             currentLng = location.longitude
-
-            getLocation()
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -77,20 +76,11 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         override fun onProviderDisabled(provider: String) {}
     }
 
-    private fun getLocation() {
-        isLoaded++
-        if (isLoaded > 0) {
-            btn_info.setOnClickListener {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-        }
-    }
-
     override fun onConnected(bundle: Bundle?) {
         lastKnownLocation = locationHelper?.location
     }
 
-    override fun onConnectionSuspended(api: Int) {
+    override fun onConnectionSuspended(connection: Int) {
         locationHelper?.connectGoogleApiClient()
     }
 

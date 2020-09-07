@@ -2,6 +2,7 @@
     <string name="app_name">D\'Urgence</string>
 
     <!--Component-->
+    <string name="weather_api_key">8034b3b56d5bdf17a165c0a0d0378109</string>
     <string name="inputName">Masukkan nama kamu</string>
     <string name="inputNumber">Masukkan nomor kamu</string>
 
@@ -18,4 +19,30 @@
 
     <!--Text-->
     <string name="info">D\'urgence Emergency Call adalah aplikasi yang dapat membantu masyarakat yang sedang berada dalam kondisi darurat. Dengan mengirimkan kode SOS pada masing-masing smartphone maka bantuan kami akan segera datang.</string>
+    <string name="textAnyHelp">Apa yang dapat kami bantu?</string>
+    <string name="textGoodDay">Halo, Andre,\nSelamat siang!</string>
+
+    <!--Service Name (Indonesian)-->
+    <string-array name="serviceName_indo">
+        <item>Rumah Sakit</item>
+        <item>Polisi</item>
+        <item>Pemadam Kebakaran</item>
+        <item>Pertolongan Pertama</item>
+    </string-array>
+
+    <!--Service Name (English)-->
+    <string-array name="serviceName_eng">
+        <item>Hospital</item>
+        <item>Police</item>
+        <item>Fire Station</item>
+        <item>First Aid</item>
+    </string-array>
+
+    <!--Service Thumbnail-->
+    <string-array name="serviceThumb">
+        <item>@drawable/ic_hospital</item>
+        <item>@drawable/ic_police</item>
+        <item>@drawable/ic_fire_station</item>
+        <item>@drawable/ic_first_aid</item>
+    </string-array>
 </resources>

@@ -1,11 +1,60 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.merpati.durgence.views.ui.fragments.HomeFragment">
+    android:background="@color/colorBase1"
+    tools:context="com.merpati.durgence.views.ui.fragments.HomeFragment"
+    tools:paddingTop="?attr/actionBarSize">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/menu_home" />
-</FrameLayout>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            tools:text="@string/textGoodDay" />
+
+        <TextView
+            android:id="@+id/tv_anyHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_welcome"
+            android:textStyle="bold"
+            android:layout_marginStart="24dp"
+            android:text="@string/textAnyHelp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+        <ImageView
+            android:id="@+id/iv_weather"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_toEndOf="@id/tv_welcome"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/clear_cloudy" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_weather"
+            android:layout_marginTop="48dp"
+            tools:listitem="@layout/list_service"
+            tools:itemCount="4" />
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btn_faq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="54dp"
+        android:src="@drawable/ic_help" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
