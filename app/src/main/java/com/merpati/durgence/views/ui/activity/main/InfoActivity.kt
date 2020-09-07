@@ -11,6 +11,10 @@ import androidx.core.app.ActivityCompat
 import com.andresaftari.durgence.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.merpati.durgence.DB_USERS
 import com.merpati.durgence.currentLat
 import com.merpati.durgence.currentLng
 import com.merpati.durgence.utils.helper.LocationHelper
@@ -19,6 +23,9 @@ import kotlinx.android.synthetic.main.activity_info.*
 
 class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+
     private var lastKnownLocation: Location? = null
     private var locationHelper: LocationHelper? = null
     private var locationManager: LocationManager? = null
@@ -26,6 +33,9 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         // Setup Location Helper
         locationHelper = LocationHelper(this@InfoActivity)
@@ -41,6 +51,11 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             if (lastKnownLocation != null) {
                 currentLat = lastKnownLocation!!.latitude
                 currentLng = lastKnownLocation!!.longitude
+
+                database.child(DB_USERS).child(auth.uid!!).apply {
+                    child("latitude").setValue(currentLat.toString())
+                    child("longitude").setValue(currentLng.toString())
+                }
             }
 
             // Request location updates
@@ -69,6 +84,13 @@ class InfoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         override fun onLocationChanged(location: Location) {
             currentLat = location.latitude
             currentLng = location.longitude
+
+            if (auth.currentUser != null) {
+                database.child(DB_USERS).child(auth.uid!!).apply {
+                    child("latitude").setValue(currentLat.toString())
+                    child("longitude").setValue(currentLng.toString())
+                }
+            }
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}

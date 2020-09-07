@@ -123,7 +123,6 @@ data class LocationHelper(private val context: Context) : PermissionResultCallba
                 longitude,
                 1 // Here 1 is max location result to returned, recommended 1 to 5
             )
-            Log.i("LocationHelper", "$latitude, $longitude")
 
             return location[0]
         } catch (e: IOException) {

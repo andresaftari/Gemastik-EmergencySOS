@@ -89,8 +89,8 @@ class HomeFragment : Fragment() {
         addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Get user name
-                val userData = snapshot.getValue(Users::class.java)
-                val username = userData?.name.toString()
+                val user = snapshot.getValue(Users::class.java)
+                val username = user?.name.toString()
 
                 Log.i(TAG, username)
 

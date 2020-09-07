@@ -70,6 +70,13 @@ class LogoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 currentLng = lastKnownLocation!!.longitude
 
                 Log.i("LogoActivity", "$currentLat | $currentLng")
+
+                database.child(DB_USERS).child(auth.uid!!).setValue(
+                    Users(
+                        latitude = currentLat.toString(),
+                        longitude = currentLng.toString()
+                    )
+                )
             }
 
             // Request location updates
@@ -108,6 +115,11 @@ class LogoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             currentLng = location.longitude
 
             Log.i("LogoActivity", "$currentLat | $currentLng")
+
+            if (auth.currentUser != null) database.child(DB_USERS).child(auth.uid!!).apply {
+                child("latitude").setValue(currentLat.toString())
+                child("longitude").setValue(currentLng.toString())
+            }
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -169,22 +181,27 @@ class LogoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                             }
                         }
                     } else {
-                        this@LogoActivity.database.child(DB_USERS).child(user.uid).setValue(
-                            Users(
-                                user.uid,
-                                "",
-                                "",
-                                "",
-                                "",
-                                "0"
-                            )
-                        ).addOnCompleteListener {
-                            startActivity(
-                                Intent(
-                                    this@LogoActivity,
-                                    RegisterActivity::class.java
+                        this@LogoActivity.apply {
+                            database.child(DB_USERS).child(user.uid).setValue(
+                                Users(
+                                    user.uid,
+                                    "",
+                                    "",
+                                    "0",
+                                    "",
+                                    "",
+                                    "",
+                                    "0.0",
+                                    "0.0"
                                 )
-                            )
+                            ).addOnCompleteListener {
+                                startActivity(
+                                    Intent(
+                                        this@LogoActivity,
+                                        RegisterActivity::class.java
+                                    )
+                                )
+                            }
                         }
                     }
                 }

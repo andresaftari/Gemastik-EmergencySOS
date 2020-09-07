@@ -94,9 +94,10 @@ class RegisterActivity : AppCompatActivity() {
                             auth.uid!!,
                             name,
                             number,
+                            "1",
                             "",
                             "",
-                            "1"
+                            "",
                         )
                     )
                     startActivity(intent)
@@ -180,8 +181,11 @@ class RegisterActivity : AppCompatActivity() {
                     }
 
                     override fun onVerificationFailed(e: FirebaseException) {
-                        Snackbar.make(editUserOTP, "Failed! ${e.message}", Snackbar.LENGTH_SHORT)
-                            .show()
+                        Snackbar.make(
+                            editUserOTP,
+                            "Failed! ${e.message}",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         Log.i(TAG, "${e.message} = ${e.printStackTrace()}")
                     }
                 }
@@ -193,7 +197,6 @@ class RegisterActivity : AppCompatActivity() {
                 TaskExecutors.MAIN_THREAD,
                 callback
             )
-
             verifyCode(code)
         }
     }
