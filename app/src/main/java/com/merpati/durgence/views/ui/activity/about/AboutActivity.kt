@@ -1,12 +1,12 @@
-package com.merpati.durgence.views.ui.activity.main
+package com.merpati.durgence.views.ui.activity.about
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.andresaftari.durgence.R
 
-class FirstAidActivity : AppCompatActivity() {
+class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_first_aid)
+        setContentView(R.layout.activity_about)
     }
 }

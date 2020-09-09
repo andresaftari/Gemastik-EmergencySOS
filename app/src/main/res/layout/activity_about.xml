@@ -1,7 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorBase1"
     android:layout_height="match_parent"
-    tools:context="com.merpati.durgence.views.ui.fragments.ProfileFragment">
+    android:background="@color/colorBase1"
+    tools:context="com.merpati.durgence.views.ui.activity.about.AboutActivity">
+
+
+
 </RelativeLayout>

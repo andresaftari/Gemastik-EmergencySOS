@@ -2,7 +2,6 @@
     <string name="app_name">D\'Urgence</string>
 
     <!--Component-->
-    <string name="weather_api_key">8034b3b56d5bdf17a165c0a0d0378109</string>
     <string name="inputName">Masukkan nama kamu</string>
     <string name="inputNumber">Masukkan nomor kamu</string>
 
@@ -21,13 +20,16 @@
     <string name="info">D\'urgence Emergency Call adalah aplikasi yang dapat membantu masyarakat yang sedang berada dalam kondisi darurat. Dengan mengirimkan kode SOS pada masing-masing smartphone maka bantuan kami akan segera datang.</string>
     <string name="textAnyHelp">Apa yang dapat kami bantu?</string>
     <string name="textGoodDay">Halo, Andre,\nSelamat siang!</string>
+    <string name="tv_aidTitle">PERTOLONGAN PERTAMA</string>
+    <string name="menu_about">About app</string>
+    <string name="menu_faq">FAQ</string>
+    <string name="menu_logout">Logout</string>
 
     <!--Service Name (Indonesian)-->
     <string-array name="serviceName_indo">
         <item>Rumah Sakit</item>
         <item>Polisi</item>
         <item>Pemadam Kebakaran</item>
-        <item>Pertolongan Pertama</item>
     </string-array>
 
     <!--Service Name (English)-->
@@ -35,7 +37,6 @@
         <item>Hospital</item>
         <item>Police</item>
         <item>Fire Station</item>
-        <item>First Aid</item>
     </string-array>
 
     <!--Service Thumbnail-->
@@ -43,6 +44,25 @@
         <item>@drawable/ic_hospital</item>
         <item>@drawable/ic_police</item>
         <item>@drawable/ic_fire_station</item>
-        <item>@drawable/ic_first_aid</item>
+    </string-array>
+
+    <!--Aid Thumbnail-->
+    <string-array name="aidThumb">
+        <item>@drawable/ic_toothache</item>
+        <item>@drawable/ic_fainted</item>
+        <item>@drawable/ic_injury</item>
+        <item>@drawable/ic_fever</item>
+        <item>@drawable/ic_nosebleed</item>
+        <item>@drawable/ic_flu</item>
+    </string-array>
+
+    <!--Aid Name (Indonesian)-->
+    <string-array name="aidName">
+        <item>Sakit Gigi</item>
+        <item>Pingsan</item>
+        <item>Luka</item>
+        <item>Demam</item>
+        <item>Mimisan</item>
+        <item>Flu</item>
     </string-array>
 </resources>

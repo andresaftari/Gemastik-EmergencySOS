@@ -1,6 +1,5 @@
 package com.merpati.durgence.views.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,6 @@ import com.andresaftari.durgence.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.merpati.durgence.DB_USERS
-import com.merpati.durgence.views.ui.activity.authentication.LogoActivity
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
@@ -29,15 +25,5 @@ class ProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        btn_logout.setOnClickListener {
-            database.child(DB_USERS).child(auth.uid!!).child("status").setValue("0")
-            auth.signOut()
-            startActivity(
-                Intent(activity, LogoActivity::class.java).putExtra(
-                    "LOGOUT",
-                    "Anda telah logout"
-                )
-            )
-        }
     }
 }

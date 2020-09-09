@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         bottom_nav.itemIconTintList = null
         bottom_nav.setOnNavigationItemSelectedListener(onNavigationItemSelected)
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.nav_host_fragment, HomeFragment())
+            replace(R.id.fragment_container, HomeFragment())
             commit()
         }
     }
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val fragments = fun(fragmentId: Int, fragment: Fragment) {
                 if (currentId != fragmentId) supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.nav_host_fragment, fragment)
+                    replace(R.id.fragment_container, fragment)
                     commit()
                 }
             }

@@ -10,12 +10,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.merpati.durgence.model.Services
-import com.merpati.durgence.views.ui.activity.main.FirstAidActivity
 import com.merpati.durgence.views.ui.activity.main.HospitalActivity
 import kotlinx.android.synthetic.main.list_service.view.*
 
-class ListAdapter(private val list: ArrayList<Services>) :
-    RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class ServiceAdapter(private val list: ArrayList<Services>) :
+    RecyclerView.Adapter<ServiceAdapter.ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder =
         ListViewHolder(LayoutInflater.from(parent.context), parent)
@@ -24,7 +23,7 @@ class ListAdapter(private val list: ArrayList<Services>) :
         holder.bind(list[position])
         val data = list[position]
 
-        when (position % 4) {
+        when (position % 3) {
             0 -> {
                 holder.itemView.apply {
                     mcv_services.setCardBackgroundColor(
@@ -74,24 +73,6 @@ class ListAdapter(private val list: ArrayList<Services>) :
                             "Selected ${data.nameEng}!",
                             Snackbar.LENGTH_SHORT
                         ).show()
-                    }
-                }
-            }
-            3 -> {
-                holder.itemView.apply {
-                    mcv_services.setCardBackgroundColor(
-                        ContextCompat.getColor(
-                            holder.itemView.context,
-                            R.color.colorFirstAid
-                        )
-                    )
-                    setOnClickListener {
-                        holder.itemView.context.startActivity(
-                            Intent(
-                                holder.itemView.context,
-                                FirstAidActivity::class.java
-                            )
-                        )
                     }
                 }
             }

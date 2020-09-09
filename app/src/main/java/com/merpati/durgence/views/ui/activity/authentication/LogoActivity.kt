@@ -116,9 +116,11 @@ class LogoActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
             Log.i("LogoActivity", "$currentLat | $currentLng")
 
-            if (auth.currentUser != null) database.child(DB_USERS).child(auth.uid!!).apply {
-                child("latitude").setValue(currentLat.toString())
-                child("longitude").setValue(currentLng.toString())
+            if (auth.currentUser != null) {
+                database.child(DB_USERS).child(auth.uid!!).apply {
+                    child("latitude").setValue(currentLat.toString())
+                    child("longitude").setValue(currentLng.toString())
+                }
             }
         }
 

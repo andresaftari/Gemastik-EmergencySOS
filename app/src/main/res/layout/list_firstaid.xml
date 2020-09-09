@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
+    android:layout_height="160dp"
+    android:layout_margin="16dp"
+    app:cardBackgroundColor="@color/colorAid"
+    tools:showIn="@layout/fragment_menu"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:id="@+id/iv_aidThumb"
+            android:layout_width="100dp"
+            android:layout_centerInParent="true"
+            android:layout_height="100dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_fainted" />
+
+        <TextView
+            android:id="@+id/tv_aidName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_aidThumb"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            tools:text="Pingsan" />
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
